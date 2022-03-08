@@ -10,7 +10,7 @@ function Asteroid (options) {
   MovingObject.call(this, options);
   this.color = DEFAULTS.COLOR;
   this.radius = DEFAULTS.RADIUS;
-  this.vel = Util.randomVec(1);
+  this.vel = Util.randomVec(2);
 }
 
 Util.inherits(Asteroid, MovingObject)
