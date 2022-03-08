@@ -22,4 +22,19 @@ MovingObject.prototype.move = function () {
   this.pos = this.game.wrap(this.pos);
 }
 
+MovingObject.prototype.isCollidedWith = function (otherObject) {
+  let sumRadii = this.radius + otherObject.radius;
+  // Use the force: a^2 + b^2 = c^2
+  // => distanceX^2 + distanceY^2 = distance^2
+  let dX = this.pos[0] - otherObject.pos[0]
+  let dY = this.pos[1] - otherObject.pos[1]
+  let distance = Math.sqrt((dX ** 2) + (dY ** 2))
+  return distance < sumRadii ? true : false;
+}
+
+MovingObject.prototype.collideWith = function (otherObject) {
+  this.game.remove(this);
+  this.game.remove(otherObject);
+}
+
 module.exports = MovingObject;

@@ -44,4 +44,29 @@ Game.prototype.wrap = function (pos) {
   return [(pos[0] + Game.DIM_X) % Game.DIM_X, (pos[1] + Game.DIM_Y) % Game.DIM_Y];
 }
 
+Game.prototype.checkCollisions = function () {
+  for (let i = 0; i < this.asteroids.length; i++) {
+    for (let j = 0; j < this.asteroids.length; j++) {
+      if (i != j) {
+        let firstAsteroid = this.asteroids[i];
+        let secondAsteroid = this.asteroids[j];
+        if (firstAsteroid.isCollidedWith(secondAsteroid)) {
+          console.log("COLLISION");
+          firstAsteroid.collideWith(secondAsteroid);
+        }
+      }
+    }
+  }
+}
+
+Game.prototype.step = function () {
+  this.moveObjects();
+  this.checkCollisions();
+}
+
+Game.prototype.remove = function (asteroidToRemove) {
+  let idx = this.asteroids.indexOf(asteroidToRemove);
+  this.asteroids.splice(idx, 1);
+}
+
 module.exports = Game;
