@@ -1,9 +1,13 @@
 const Asteroid = require("./asteroid");
 const MovingObject = require("./moving_object");
+const Ship = require("./ship");
 
 function Game () {
   this.asteroids = [];
-
+  this.ship = new Ship({
+    pos: this.randomPosition(),
+    game: this
+  });
   this.addAsteroids();
 }
 
@@ -29,8 +33,8 @@ Game.prototype.randomPosition = function () {
 
 Game.prototype.draw = function (ctx) {
   ctx.clearRect(0, 0, 500, 500);
-  this.asteroids.forEach( asteroid => {
-    asteroid.draw(ctx);
+  this.allObjects().forEach( object => {
+    object.draw(ctx);
   })
 }
 
@@ -67,6 +71,10 @@ Game.prototype.step = function () {
 Game.prototype.remove = function (asteroidToRemove) {
   let idx = this.asteroids.indexOf(asteroidToRemove);
   this.asteroids.splice(idx, 1);
+}
+
+Game.prototype.allObjects = function () {
+  return this.asteroids.concat(this.ship);
 }
 
 module.exports = Game;

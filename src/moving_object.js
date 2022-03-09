@@ -9,7 +9,7 @@ function MovingObject(options) {
 MovingObject.prototype.draw = function (ctx) {
   ctx.beginPath();
   ctx.arc(this.pos[0], this.pos[1], this.radius, 0, 2*Math.PI, true);
-  // this.call.strokeStyle = 'black';
+  // ctx.strokeStyle = 'blue';
   // ctx.lineWidth = 10;
   // ctx.stroke();
   ctx.fillStyle = this.color;
