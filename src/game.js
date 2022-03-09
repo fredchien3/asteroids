@@ -2,18 +2,19 @@ const Asteroid = require("./asteroid");
 const MovingObject = require("./moving_object");
 const Ship = require("./ship");
 
+Game.DIM_X = 500;
+Game.DIM_Y = 500;
+Game.NUM_ASTEROIDS = 10;
+
 function Game () {
   this.asteroids = [];
+  this.addAsteroids();
+
   this.ship = new Ship({
     pos: this.randomPosition(),
     game: this
   });
-  this.addAsteroids();
 }
-
-Game.DIM_X = 500;
-Game.DIM_Y = 500;
-Game.NUM_ASTEROIDS = 10;
 
 Game.prototype.addAsteroids = function () {
   for (let i = 0; i < Game.NUM_ASTEROIDS; i++) {
@@ -39,8 +40,8 @@ Game.prototype.draw = function (ctx) {
 }
 
 Game.prototype.moveObjects = function (ctx) {
-  this.asteroids.forEach( asteroid => {
-    asteroid.move(ctx);
+  this.allObjects().forEach( object => {
+    object.move(ctx);
   })
 }
 
@@ -49,14 +50,13 @@ Game.prototype.wrap = function (pos) {
 }
 
 Game.prototype.checkCollisions = function () {
-  for (let i = 0; i < this.asteroids.length; i++) {
-    for (let j = 0; j < this.asteroids.length; j++) {
+  for (let i = 0; i < this.allObjects().length; i++) {
+    for (let j = 0; j < this.allObjects().length; j++) {
       if (i != j) {
-        let firstAsteroid = this.asteroids[i];
-        let secondAsteroid = this.asteroids[j];
-        if (firstAsteroid.isCollidedWith(secondAsteroid)) {
-          console.log("COLLISION");
-          firstAsteroid.collideWith(secondAsteroid);
+        let firstObject = this.allObjects()[i];
+        let secondObject = this.allObjects()[j];
+        if (firstObject.isCollidedWith(secondObject)) {
+          firstObject.collideWith(secondObject);
         }
       }
     }
@@ -68,9 +68,9 @@ Game.prototype.step = function () {
   this.checkCollisions();
 }
 
-Game.prototype.remove = function (asteroidToRemove) {
-  let idx = this.asteroids.indexOf(asteroidToRemove);
-  this.asteroids.splice(idx, 1);
+Game.prototype.remove = function (objectToRemove) {
+  let idx = this.allObjects().indexOf(objectToRemove);
+  this.allObjects().splice(idx, 1);
 }
 
 Game.prototype.allObjects = function () {
