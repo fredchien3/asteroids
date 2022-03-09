@@ -16,10 +16,24 @@ MovingObject.prototype.draw = function (ctx) {
   ctx.fill();
 }
 
+MovingObject.prototype.isWrappable = true;
+
 MovingObject.prototype.move = function () {
-  this.pos[0] += this.vel[0];
-  this.pos[1] += this.vel[1];
-  this.pos = this.game.wrap(this.pos);
+  // this.pos[0] += this.vel[0];
+  // this.pos[1] += this.vel[1];
+  // bad code above
+
+  this.pos = [this.pos[0] + this.vel[0], this.pos[1] + this.vel[1]]
+  // above line fixed the issue of the ship sticking to the bullet. not sure why
+
+  if (this.game.isOutOfBounds(this.pos)) {
+    if (this.isWrappable) {
+      this.pos = this.game.wrap(this.pos);
+    } else {
+      this.game.remove(this);
+    }
+  }
+
 }
 
 MovingObject.prototype.isCollidedWith = function (otherObject) {

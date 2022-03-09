@@ -11,11 +11,21 @@ function Bullet (options) {
   MovingObject.call(this, options);
   this.radius = BULLET.RADIUS;
   this.color = BULLET.COLOR;
-  let shipVel = options.vel;
+  let shipVel = Array.from(options.vel);
   let newVel = [Math.sign(shipVel[0]) * BULLET.SPEED, Math.sign(shipVel[1]) * BULLET.SPEED];
   this.vel = newVel;
 }
-
 Util.inherits(Bullet, MovingObject)
+
+Bullet.prototype.isWrappable = false;
+
+Bullet.prototype.collideWith = function (otherObject) {
+  if (otherObject.type === 'asteroid') {
+    this.game.remove(this);
+    this.game.remove(otherObject);
+    return true;
+  }
+}
+
 
 module.exports = Bullet;

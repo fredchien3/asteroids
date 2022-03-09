@@ -58,7 +58,8 @@ Game.prototype.checkCollisions = function () {
         let firstObject = this.allObjects()[i];
         let secondObject = this.allObjects()[j];
         if (firstObject.isCollidedWith(secondObject)) {
-          firstObject.collideWith(secondObject);
+          let collision = firstObject.collideWith(secondObject);
+          if (collision) return;
         }
       }
     }
@@ -81,13 +82,28 @@ Game.prototype.add = function (object) {
   return false;
 }
 
-Game.prototype.remove = function (objectToRemove) {
-  let idx = this.allObjects().indexOf(objectToRemove);
-  this.allObjects().splice(idx, 1);
+Game.prototype.remove = function (object) {
+  if (object instanceof Asteroid) {
+    let idx = this.asteroids.indexOf(object);
+    this.asteroids.splice(idx, 1);
+    return true;
+  } else if (object instanceof Bullet) {
+    let idx = this.bullets.indexOf(object);
+    this.bullets.splice(idx, 1);
+    return true;
+  }
 }
 
 Game.prototype.allObjects = function () {
   return this.asteroids.concat(this.ship).concat(this.bullets);
+}
+
+Game.prototype.isOutOfBounds = function (pos) {
+  if (pos[0] < 0 || pos[0] > 500 || pos[1] < 0 || pos[1] > 500) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 module.exports = Game;

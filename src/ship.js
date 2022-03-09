@@ -27,9 +27,7 @@ Ship.prototype.power = function (impulse) {
 
 Ship.prototype.fireBullet = function () {
   if (this.stationary()) {
-    console.log('stationary');
   } else {
-    console.log('fireBullet');
     let newBullet = new Bullet({pos: this.pos, vel: this.vel, game: this.game});
     this.game.add(newBullet);
   }

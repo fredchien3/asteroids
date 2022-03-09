@@ -12,6 +12,7 @@ function Asteroid (options) {
   this.color = ASTEROID.COLOR;
   this.radius = ASTEROID.RADIUS;
   this.vel = Util.randomVec(2);
+  this.type = 'asteroid';
 }
 Util.inherits(Asteroid, MovingObject)
 
@@ -19,8 +20,8 @@ Asteroid.prototype.collideWith = function (otherObject) {
   if (otherObject instanceof Ship) {
     otherObject.relocate();
   } else {
-    this.game.remove(this);
-    this.game.remove(otherObject);
+    // this.game.remove(this);
+    // this.game.remove(otherObject);
   }
 }
 
