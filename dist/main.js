@@ -35,7 +35,7 @@ eval("const Asteroid = __webpack_require__(/*! ./asteroid */ \"./src/asteroid.js
   \**************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const Game = __webpack_require__(/*! ./game */ \"./src/game.js\");\r\n// Write a GameView.prototype.start method. It should call setInterval to call Game.prototype.moveObjects and Game.prototype.draw once every 20ms or so.\r\n\r\nfunction GameView (ctx) {\r\n  this.game = new Game;\r\n  this.ctx = ctx;\r\n}\r\n\r\nGameView.prototype.start = function () {\r\n  let that = this;\r\n  setInterval(function () {\r\n    that.game.step();\r\n    that.game.draw(that.ctx);\r\n  }, 20)\r\n}\r\n\r\nmodule.exports = GameView;\n\n//# sourceURL=webpack:///./src/game_view.js?");
+eval("const Game = __webpack_require__(/*! ./game */ \"./src/game.js\");\r\n\r\nfunction GameView (ctx) {\r\n  this.game = new Game;\r\n  this.ship = this.game.ship;\r\n  this.ctx = ctx;\r\n}\r\n\r\nGameView.MOVES = {\r\n  up: [0, -1],\r\n  left: [-1, 0],\r\n  down: [0, 1],\r\n  right: [1, 0]\r\n};\r\n\r\nGameView.prototype.start = function () {\r\n  this.bindKeyHandlers();\r\n  let that = this;\r\n  setInterval(function () {\r\n    that.game.step();\r\n    that.game.draw(that.ctx);\r\n  }, 20)\r\n}\r\n\r\nGameView.prototype.bindKeyHandlers = function () {\r\n  let ship = this.ship;\r\n\r\n  Object.keys(GameView.MOVES).forEach(function(k) {\r\n    let move = GameView.MOVES[k];\r\n    key(k, function () {ship.power(move) });\r\n  })\r\n\r\n  key(\"space\", function () { ship.fireBullet() });\r\n}\r\n\r\nmodule.exports = GameView;\n\n//# sourceURL=webpack:///./src/game_view.js?");
 
 /***/ }),
 
@@ -65,7 +65,7 @@ eval("function MovingObject(options) {\r\n  this.pos = options.pos;\r\n  this.ve
   \*********************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const MovingObject = __webpack_require__(/*! ./moving_object */ \"./src/moving_object.js\");\r\nconst Util = __webpack_require__(/*! ./utils */ \"./src/utils.js\");\r\n\r\nconst SHIP = {\r\n  COLOR: 'red',\r\n  RADIUS: 15\r\n}\r\n\r\nfunction Ship (options) {\r\n  MovingObject.call(this, options);\r\n  this.color = SHIP.COLOR;\r\n  this.radius = SHIP.RADIUS;\r\n  this.vel = [-1, -0];\r\n}\r\nUtil.inherits(Ship, MovingObject)\r\n\r\nShip.prototype.relocate = function () {\r\n  this.pos = this.game.randomPosition();\r\n  this.vel = [0, 0];\r\n}\r\n\r\nmodule.exports = Ship;\n\n//# sourceURL=webpack:///./src/ship.js?");
+eval("const MovingObject = __webpack_require__(/*! ./moving_object */ \"./src/moving_object.js\");\r\nconst Util = __webpack_require__(/*! ./utils */ \"./src/utils.js\");\r\n\r\nconst SHIP = {\r\n  COLOR: 'red',\r\n  RADIUS: 15\r\n}\r\n\r\nfunction Ship (options) {\r\n  MovingObject.call(this, options);\r\n  this.color = SHIP.COLOR;\r\n  this.radius = SHIP.RADIUS;\r\n  this.vel = [0, 0];\r\n}\r\nUtil.inherits(Ship, MovingObject)\r\n\r\nShip.prototype.relocate = function () {\r\n  this.pos = this.game.randomPosition();\r\n  this.vel = [0, 0];\r\n}\r\n\r\nShip.prototype.power = function (impulse) {\r\n  this.vel[0] += impulse[0];\r\n  this.vel[1] += impulse[1];\r\n}\r\n\r\nmodule.exports = Ship;\n\n//# sourceURL=webpack:///./src/ship.js?");
 
 /***/ }),
 
