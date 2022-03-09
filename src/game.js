@@ -1,4 +1,5 @@
 const Asteroid = require("./asteroid");
+const Bullet = require("./bullet");
 const MovingObject = require("./moving_object");
 const Ship = require("./ship");
 
@@ -9,6 +10,7 @@ Game.NUM_ASTEROIDS = 10;
 function Game () {
   this.asteroids = [];
   this.addAsteroids();
+  this.bullets = [];
 
   this.ship = new Ship({
     pos: this.randomPosition(),
@@ -68,13 +70,24 @@ Game.prototype.step = function () {
   this.checkCollisions();
 }
 
+Game.prototype.add = function (object) {
+  if (object instanceof Asteroid) {
+    this.asteroids.push(object);
+    return true;
+  } else if (object instanceof Bullet) {
+    this.bullets.push(object);
+    return true;
+  }
+  return false;
+}
+
 Game.prototype.remove = function (objectToRemove) {
   let idx = this.allObjects().indexOf(objectToRemove);
   this.allObjects().splice(idx, 1);
 }
 
 Game.prototype.allObjects = function () {
-  return this.asteroids.concat(this.ship);
+  return this.asteroids.concat(this.ship).concat(this.bullets);
 }
 
 module.exports = Game;

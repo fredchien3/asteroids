@@ -1,3 +1,4 @@
+const Bullet = require("./bullet");
 const MovingObject = require("./moving_object");
 const Util = require("./utils");
 
@@ -22,6 +23,20 @@ Ship.prototype.relocate = function () {
 Ship.prototype.power = function (impulse) {
   this.vel[0] += impulse[0];
   this.vel[1] += impulse[1];
+}
+
+Ship.prototype.fireBullet = function () {
+  if (this.stationary()) {
+    console.log('stationary');
+  } else {
+    console.log('fireBullet');
+    let newBullet = new Bullet({pos: this.pos, vel: this.vel, game: this.game});
+    this.game.add(newBullet);
+  }
+}
+
+Ship.prototype.stationary = function () {
+  return (this.vel[0] === 0 && this.vel[1] === 0);
 }
 
 module.exports = Ship;
